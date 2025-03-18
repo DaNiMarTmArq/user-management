@@ -8,5 +8,5 @@ import { RouterModule } from '@angular/router';
   imports: [RouterModule],
 })
 export class AppComponent {
-  title = 'user-management';
+  title = 'User Guardian';
 }
