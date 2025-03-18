@@ -5,7 +5,3 @@
   --accent-light: #ead196;
   --fill: #eeeeee;
 }
-
-html {
-  background-color: var(--fill);
-}

@@ -1,9 +1,12 @@
 <nav class="navbar navbar-light bg-white navbar-user-management">
-  <div class="container">
-    <a class="navbar-brand" routerLink="/home">
+  <div class="container-sm">
+    <a class="d-flex align-items-center gap-2 navbar-brand" routerLink="/home">
       <img src="user-management-logo.svg" alt="User Management Logo" />
-      {{ title }}
+      <p class="m-0">{{ title }}</p>
     </a>
+    <a routerLink="/newuser" class="btn btn-cta">Crear</a>
   </div>
 </nav>
-<router-outlet></router-outlet>
+<main class="container-sm mt-4">
+  <router-outlet></router-outlet>
+</main>
