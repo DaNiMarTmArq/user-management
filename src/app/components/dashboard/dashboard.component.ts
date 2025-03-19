@@ -2,17 +2,20 @@ import { Component, inject } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { User } from '../../Interfaces/User';
 import { UserPaginatedResponse } from '../../Interfaces/UserResponses';
-import { UserComponent } from './user/user/user.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { UserComponent } from './user/user.component';
+import { UserListComponent } from './user-list/user-list.component';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [UserComponent],
+  imports: [UserListComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent {
+  placeholders = [...Array(6).keys()];
   userList: User[] = [];
+  loading = false;
   currentPage = 1;
   totalPages = 1;
   error = false;
@@ -34,6 +37,7 @@ export class DashboardComponent {
   }
 
   private fetchUsers(page: number) {
+    this.loading = true;
     this.userService.getAll({ page: page.toString() }).subscribe({
       next: (response) => this.handleUserResponse(response),
       error: (error) => this.handleServiceError(error),
@@ -44,6 +48,7 @@ export class DashboardComponent {
     this.userList = response.results;
     this.currentPage = response.page;
     this.totalPages = response.total_pages;
+    this.loading = false;
   }
 
   private handleServiceError(error: unknown) {
@@ -53,5 +58,6 @@ export class DashboardComponent {
       console.error('Unexpected error:', error);
     }
     this.error = true;
+    this.loading = false;
   }
 }

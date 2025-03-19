@@ -1,10 +1,22 @@
-@if (userList.length > 0) {
-<div class="row g-4">
-  @for (user of userList; track $index) {
-  <div class="col-12 col-md-4 col-lg-3 d-flex">
-    <app-user [user]="user"></app-user>
-  </div>
-  }
+@if (userList.length > 0 && !loading) {
+<app-user-list [userList]="userList"></app-user-list>
+<nav class="mt-4">
+  <ul class="pagination">
+    @if (currentPage !== 1) {
+    <li class="page-item cursor-pointer" (click)="previousPage()">
+      <a class="page-link">Anterior</a>
+    </li>
+    } @if (totalPages > 1 && currentPage < totalPages) {
+    <li class="page-item cursor-pointer" (click)="nextPage()">
+      <a class="page-link">Siguiente</a>
+    </li>
+    }
+  </ul>
+</nav>
+
+} @else if (loading) {
+<div class="spinner-border" role="status">
+  <span class="visually-hidden">Loading...</span>
 </div>
 } @else if (error) {
 <div class="container text-center mt-5">
@@ -15,16 +27,3 @@
   <h2 class="mb-3">No hay usuarios disponibles</h2>
 </div>
 }
-<nav class="mt-4">
-  <ul class="pagination">
-    @if (currentPage !== 1) {
-    <li class="page-item" (click)="previousPage()">
-      <a class="page-link">Anterior</a>
-    </li>
-    } @if (totalPages > 1 && currentPage < totalPages) {
-    <li class="page-item" (click)="nextPage()">
-      <a class="page-link">Siguiente</a>
-    </li>
-    }
-  </ul>
-</nav>
