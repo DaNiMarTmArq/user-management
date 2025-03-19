@@ -1,1 +1,19 @@
-<app-user></app-user>
+@if (userList.length > 0) {
+<div class="row g-4">
+  @for (user of userList; track $index) {
+  <div class="col-12 col-md-4 col-lg-3 d-flex">
+    <app-user [user]="user"></app-user>
+  </div>
+  }
+</div>
+} @else {
+<div class="container text-center mt-5">
+  <h2 class="mb-3">No hay usuarios disponibles</h2>
+</div>
+}
+<nav class="mt-4">
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link">Anterior</a></li>
+    <li class="page-item"><a class="page-link">Siguiente</a></li>
+  </ul>
+</nav>

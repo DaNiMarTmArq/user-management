@@ -1,4 +1,4 @@
-<div class="card" style="width: 18rem">
+<div class="card d-flex flex-column h-100 w-100">
   <div class="d-flex justify-content-center">
     <img
       [src]="user()!.image"
@@ -6,21 +6,23 @@
       alt="..."
     />
   </div>
-  <div class="card-body">
+  <div class="card-body d-flex flex-column flex-grow-1">
     <h5 class="card-title">{{ fullname }}</h5>
-    <div class="btn-group" role="group">
-      <button type="button" class="btn btn-success">
-        <img class="w-25" src="search.svg" alt="" />
-        <p>Detalle</p>
-      </button>
-      <button type="button" class="btn btn-warning">
-        <img class="w-25" src="refresh.svg" alt="" />
-        <p>Actualizar</p>
-      </button>
-      <button type="button" class="btn btn-danger">
-        <img class="w-25" src="bin.svg" alt="" />
-        <p>Eliminar</p>
-      </button>
+    <div class="mt-auto">
+      <div class="btn-group w-100" role="group">
+        <button type="button" class="btn btn-success">
+          <img class="w-25" src="search.svg" alt="" />
+          <p>Detalle</p>
+        </button>
+        <button type="button" class="btn btn-warning">
+          <img class="w-25" src="refresh.svg" alt="" />
+          <p>Actualizar</p>
+        </button>
+        <button type="button" class="btn btn-danger">
+          <img class="w-25" src="bin.svg" alt="" />
+          <p>Eliminar</p>
+        </button>
+      </div>
     </div>
   </div>
 </div>
