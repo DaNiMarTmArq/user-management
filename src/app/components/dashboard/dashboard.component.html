@@ -6,6 +6,10 @@
   </div>
   }
 </div>
+} @else if (error) {
+<div class="container text-center mt-5">
+  <h2 class="mb-3 text-danger">Error inesperado</h2>
+</div>
 } @else {
 <div class="container text-center mt-5">
   <h2 class="mb-3">No hay usuarios disponibles</h2>
@@ -13,7 +17,14 @@
 }
 <nav class="mt-4">
   <ul class="pagination">
-    <li class="page-item"><a class="page-link">Anterior</a></li>
-    <li class="page-item"><a class="page-link">Siguiente</a></li>
+    @if (currentPage !== 1) {
+    <li class="page-item" (click)="previousPage()">
+      <a class="page-link">Anterior</a>
+    </li>
+    } @if (totalPages > 1 && currentPage < totalPages) {
+    <li class="page-item" (click)="nextPage()">
+      <a class="page-link">Siguiente</a>
+    </li>
+    }
   </ul>
 </nav>

@@ -14,11 +14,11 @@ export class UserService {
   private readonly baseEndpoint = `${API_BASE}/users`;
   constructor() {}
 
-  getAll(params?: Record<string, string>): Observable<User[]> {
+  getAll(params?: Record<string, string>): Observable<UserPaginatedResponse> {
     const httpParams = new HttpParams({ fromObject: params });
-    return this.client
-      .get<UserPaginatedResponse>(this.baseEndpoint, { params: httpParams })
-      .pipe(map((response) => response.results));
+    return this.client.get<UserPaginatedResponse>(this.baseEndpoint, {
+      params: httpParams,
+    });
   }
 
   getUser(userId: string): Observable<User> {

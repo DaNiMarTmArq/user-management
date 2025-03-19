@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { UserComponent } from './user/user/user.component';
 import { User } from '../../Interfaces/User';
 import { UserService } from '../../services/user.service';
+import { UserPaginatedResponse } from '../../Interfaces/UserResponses';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,19 +12,45 @@ import { UserService } from '../../services/user.service';
 })
 export class DashboardComponent {
   userList: User[] = [];
-  currentPage = 0;
+  currentPage = 1;
+  totalPages = 1;
+  error = false;
   userService = inject(UserService);
 
   ngOnInit() {
     this.userService.getAll().subscribe({
-      next: (list) => this.handleUserResponse(list),
-      error: (error) => {
-        console.log(error);
-      },
+      next: (response) => this.handleUserResponse(response),
+      error: (error) => {},
     });
   }
 
-  private handleUserResponse(list: User[]) {
-    this.userList = list;
+  nextPage() {
+    const nextPage: Record<string, string> = {
+      page: (this.currentPage + 1).toString(),
+    };
+    this.userService.getAll(nextPage).subscribe({
+      next: (response) => this.handleUserResponse(response),
+      error: (error) => this.handleServiceError(error),
+    });
+  }
+  previousPage() {
+    const previousPage: Record<string, string> = {
+      page: (this.currentPage - 1).toString(),
+    };
+    this.userService.getAll(previousPage).subscribe({
+      next: (response) => this.handleUserResponse(response),
+      error: (error) => this.handleServiceError(error),
+    });
+  }
+
+  private handleUserResponse(response: UserPaginatedResponse) {
+    this.userList = response.results;
+    this.currentPage = response.page;
+    this.totalPages = response.total_pages;
+  }
+
+  private handleServiceError(error: any) {
+    console.log(error);
+    this.error = true;
   }
 }
