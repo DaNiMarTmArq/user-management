@@ -1,0 +1,26 @@
+<div class="card" style="width: 18rem">
+  <div class="d-flex justify-content-center">
+    <img
+      [src]="user()!.image"
+      class="card-img-top rounded-circle w-50"
+      alt="..."
+    />
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">{{ fullname }}</h5>
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-success">
+        <img class="w-25" src="search.svg" alt="" />
+        <p>Detalle</p>
+      </button>
+      <button type="button" class="btn btn-warning">
+        <img class="w-25" src="refresh.svg" alt="" />
+        <p>Actualizar</p>
+      </button>
+      <button type="button" class="btn btn-danger">
+        <img class="w-25" src="bin.svg" alt="" />
+        <p>Eliminar</p>
+      </button>
+    </div>
+  </div>
+</div>
