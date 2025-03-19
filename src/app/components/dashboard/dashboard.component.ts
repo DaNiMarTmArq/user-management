@@ -1,8 +1,9 @@
 import { Component, inject } from '@angular/core';
-import { UserComponent } from './user/user/user.component';
-import { User } from '../../Interfaces/User';
 import { UserService } from '../../services/user.service';
+import { User } from '../../Interfaces/User';
 import { UserPaginatedResponse } from '../../Interfaces/UserResponses';
+import { UserComponent } from './user/user/user.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,26 +19,22 @@ export class DashboardComponent {
   userService = inject(UserService);
 
   ngOnInit() {
-    this.userService.getAll().subscribe({
-      next: (response) => this.handleUserResponse(response),
-      error: (error) => {},
-    });
+    this.fetchUsers(this.currentPage);
   }
 
   nextPage() {
-    const nextPage: Record<string, string> = {
-      page: (this.currentPage + 1).toString(),
-    };
-    this.userService.getAll(nextPage).subscribe({
-      next: (response) => this.handleUserResponse(response),
-      error: (error) => this.handleServiceError(error),
-    });
+    if (this.currentPage < this.totalPages) {
+      this.fetchUsers(this.currentPage + 1);
+    }
   }
   previousPage() {
-    const previousPage: Record<string, string> = {
-      page: (this.currentPage - 1).toString(),
-    };
-    this.userService.getAll(previousPage).subscribe({
+    if (this.currentPage > 1) {
+      this.fetchUsers(this.currentPage - 1);
+    }
+  }
+
+  private fetchUsers(page: number) {
+    this.userService.getAll({ page: page.toString() }).subscribe({
       next: (response) => this.handleUserResponse(response),
       error: (error) => this.handleServiceError(error),
     });
@@ -49,8 +46,12 @@ export class DashboardComponent {
     this.totalPages = response.total_pages;
   }
 
-  private handleServiceError(error: any) {
-    console.log(error);
+  private handleServiceError(error: unknown) {
+    if (error instanceof HttpErrorResponse) {
+      console.error(`HTTP Error: ${error.status} - ${error.message}`);
+    } else {
+      console.error('Unexpected error:', error);
+    }
     this.error = true;
   }
 }
