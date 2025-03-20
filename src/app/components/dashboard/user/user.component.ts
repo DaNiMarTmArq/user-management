@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { User } from '../../../Interfaces/User';
 
 @Component({
@@ -9,7 +9,11 @@ import { User } from '../../../Interfaces/User';
 })
 export class UserComponent {
   user = input<User>();
+  deleteUserOutout = output<string>({ alias: 'delete' });
   public get fullname() {
     return `${this.user()!.first_name} ${this.user()!.last_name}`;
+  }
+  onDelete() {
+    this.deleteUserOutout.emit(this.user()!._id);
   }
 }

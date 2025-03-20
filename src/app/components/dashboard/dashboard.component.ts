@@ -37,6 +37,14 @@ export class DashboardComponent {
     }
   }
 
+  handleDelete(userId: string) {
+    this.userService.deleteUser(userId).subscribe({
+      next: () =>
+        (this.userList = this.userList.filter((user) => user._id !== userId)),
+      error: (err) => this.handleServiceError(err),
+    });
+  }
+
   private fetchUsers(page: number) {
     this.loading = true;
     this.userService.getAll({ page: page.toString() }).subscribe({

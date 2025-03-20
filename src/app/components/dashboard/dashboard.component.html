@@ -1,5 +1,8 @@
 @if (userList.length > 0 && !loading) {
-<app-user-list [userList]="userList"></app-user-list>
+<app-user-list
+  [userList]="userList"
+  (onDelete)="handleDelete($event)"
+></app-user-list>
 <nav class="mt-4">
   <ul class="pagination">
     @if (currentPage !== 1) {

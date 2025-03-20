@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { User } from '../../../Interfaces/User';
 import { UserComponent } from '../user/user.component';
 
@@ -9,4 +9,9 @@ import { UserComponent } from '../user/user.component';
 })
 export class UserListComponent {
   userList = input<User[]>();
+  onDeleteOutput = output<string>({ alias: 'onDelete' });
+
+  onDelete(userId: string) {
+    this.onDeleteOutput.emit(userId);
+  }
 }
