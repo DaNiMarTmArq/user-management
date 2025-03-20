@@ -18,7 +18,7 @@
           <img class="w-25" src="refresh.svg" alt="" />
           <p>Actualizar</p>
         </button>
-        <button type="button" class="btn btn-danger" (click)="onDelete()">
+        <button type="button" class="btn btn-danger" (click)="toggleModal()">
           <img class="w-25" src="bin.svg" alt="" />
           <p>Eliminar</p>
         </button>
@@ -26,3 +26,9 @@
     </div>
   </div>
 </div>
+
+<app-deletemodal
+  [isVisible]="modal()"
+  (cancel)="toggleModal()"
+  (delete)="onDelete()"
+/>

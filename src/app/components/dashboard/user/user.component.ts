@@ -1,14 +1,16 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 import { User } from '../../../Interfaces/User';
+import { DeletemodalComponent } from '../../deletemodal/deletemodal.component';
 
 @Component({
   selector: 'app-user',
-  imports: [],
+  imports: [DeletemodalComponent],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css',
 })
 export class UserComponent {
   user = input<User>();
+  modal = signal(false);
   deleteUserOutput = output<string>({ alias: 'delete' });
   detailUserOutput = output<string>({ alias: 'detail' });
   public get fullname() {
@@ -20,8 +22,13 @@ export class UserComponent {
 
   onDelete() {
     this.deleteUserOutput.emit(this.userId);
+    this.toggleModal();
   }
   onDetail() {
     this.detailUserOutput.emit(this.userId);
+  }
+
+  toggleModal() {
+    this.modal.set(!this.modal());
   }
 }
