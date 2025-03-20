@@ -7,21 +7,32 @@
   <a class="btn btn-secondary" routerLink="/home">Volver al dashboard</a>
 </div>
 } @else {
-<div class="container d-flex flex-column">
-  <div>
-    <img class="w-75" [src]="user()?.image" alt="Imagen de usuario" />
+<div class="container d-flex flex-column flex-md-row align-items-center">
+  <div class="col-12 col-md-4 text-center text-md-start me-md-4">
+    <img
+      class="w-75 w-md-50 rounded-circle"
+      [src]="user()?.image"
+      alt="Imagen de usuario"
+    />
   </div>
-  <hr class="my-4" />
-  <div>
+
+  <hr class="w-100 my-4 d-md-none" />
+
+  <div class="col-12 col-md-8">
     <h2>{{ user()?.first_name }}</h2>
-    <h3>{{ user()?.last_name }}</h3>
-    <p>Nombre de usuario: {{ user()?.username }}</p>
-    <p>Email: {{ user()?.email }}</p>
+    <h4>{{ user()?.last_name }}</h4>
+    <div class="mt-4">
+      <p class="m-0">Nombre de usuario: {{ user()?.username }}</p>
+      <p class="m-0">Email: {{ user()?.email }}</p>
+    </div>
+
+    <hr class="my-4 d-none d-md-block" />
+
     <div class="mt-auto">
-      <div class="btn-group w-100" role="group">
-        <button type="button" class="btn btn-secondary">
+      <div class="btn-group w-75" role="group">
+        <button type="button" class="btn btn-secondary" routerLink="">
           <img class="w-25" src="search.svg" alt="" />
-          <p>Volver al dashboard</p>
+          <p>Volver</p>
         </button>
         <button type="button" class="btn btn-warning">
           <img class="w-25" src="refresh.svg" alt="" />
