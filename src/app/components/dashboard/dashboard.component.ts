@@ -5,10 +5,11 @@ import { UserPaginatedResponse } from '../../Interfaces/UserResponses';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserComponent } from './user/user.component';
 import { UserListComponent } from './user-list/user-list.component';
+import { LoadComponent } from '../load/load.component';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [UserListComponent],
+  imports: [UserListComponent, LoadComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
