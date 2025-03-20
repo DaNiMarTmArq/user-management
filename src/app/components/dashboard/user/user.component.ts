@@ -9,11 +9,19 @@ import { User } from '../../../Interfaces/User';
 })
 export class UserComponent {
   user = input<User>();
-  deleteUserOutout = output<string>({ alias: 'delete' });
+  deleteUserOutput = output<string>({ alias: 'delete' });
+  detailUserOutput = output<string>({ alias: 'detail' });
   public get fullname() {
     return `${this.user()!.first_name} ${this.user()!.last_name}`;
   }
+  public get userId(): string {
+    return this.user()!._id;
+  }
+
   onDelete() {
-    this.deleteUserOutout.emit(this.user()!._id);
+    this.deleteUserOutput.emit(this.userId);
+  }
+  onDetail() {
+    this.detailUserOutput.emit(this.userId);
   }
 }

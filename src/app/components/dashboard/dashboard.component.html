@@ -2,7 +2,8 @@
 <app-user-list
   [userList]="userList"
   (onDelete)="handleDelete($event)"
-></app-user-list>
+  (onDetail)="handleDetail($event)"
+/>
 <nav class="mt-4">
   <ul class="pagination">
     @if (currentPage !== 1) {

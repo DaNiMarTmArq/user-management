@@ -1,7 +1,11 @@
 <div class="row g-4">
   @for (user of userList(); track $index) {
   <div class="col-12 col-md-4 col-lg-3 d-flex">
-    <app-user [user]="user" (delete)="onDelete($event)"></app-user>
+    <app-user
+      [user]="user"
+      (delete)="onDelete($event)"
+      (detail)="onDetail($event)"
+    ></app-user>
   </div>
   }
 </div>

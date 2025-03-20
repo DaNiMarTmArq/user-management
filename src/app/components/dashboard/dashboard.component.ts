@@ -6,6 +6,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { UserComponent } from './user/user.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { LoadComponent } from '../load/load.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,6 +22,7 @@ export class DashboardComponent {
   totalPages = 1;
   error = false;
   userService = inject(UserService);
+  router = inject(Router);
 
   ngOnInit() {
     this.fetchUsers(this.currentPage);
@@ -35,6 +37,10 @@ export class DashboardComponent {
     if (this.currentPage > 1) {
       this.fetchUsers(this.currentPage - 1);
     }
+  }
+
+  handleDetail(userId: string) {
+    this.router.navigate(['user', userId]);
   }
 
   handleDelete(userId: string) {
