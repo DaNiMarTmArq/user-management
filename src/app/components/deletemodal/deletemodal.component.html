@@ -1,0 +1,25 @@
+@if (isVisible()) {
+<div
+  class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center p-4"
+  style="z-index: 2"
+>
+  <div
+    class="w-100 shadow-lg rounded border border-secondary bg-white p-5"
+    style="max-width: 28rem; z-index: 3"
+  >
+    <p class="fs-4 text-danger fw-bold">¿Quieres eliminar al usuario?</p>
+
+    <div class="d-flex gap-3 mt-4">
+      <button class="flex-grow-1 btn btn-light py-3" (click)="onCancel()">
+        Cancelar
+      </button>
+      <button
+        class="flex-grow-1 btn btn-danger py-3 text-white"
+        (click)="onDelete()"
+      >
+        Eliminar
+      </button>
+    </div>
+  </div>
+</div>
+}

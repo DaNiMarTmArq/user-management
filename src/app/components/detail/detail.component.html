@@ -28,7 +28,7 @@
 
     <hr class="my-4 d-none d-md-block" />
 
-    <div class="mt-auto">
+    <div class="my-4">
       <div class="btn-group w-75" role="group">
         <button type="button" class="btn btn-secondary" routerLink="">
           <img class="w-25" src="search.svg" alt="" />
@@ -38,7 +38,7 @@
           <img class="w-25" src="refresh.svg" alt="" />
           <p>Actualizar</p>
         </button>
-        <button type="button" class="btn btn-danger">
+        <button type="button" class="btn btn-danger" (click)="toggleModal()">
           <img class="w-25" src="bin.svg" alt="" />
           <p>Eliminar</p>
         </button>
@@ -47,3 +47,9 @@
   </div>
 </div>
 }
+
+<app-deletemodal
+  [isVisible]="modal()"
+  (cancel)="toggleModal()"
+  (delete)="deleteUser()"
+/>
