@@ -1,1 +1,38 @@
-<p>detail works!</p>
+@if(loading()) {
+<div class="container d-flex justify-content-center"><app-load /></div>
+} @if (!user() && !loading()) {
+<div class="container text-center mt-5">
+  <h1 class="display-3 text-danger">Error</h1>
+  <h2 class="mb-3">Usuario no disponible</h2>
+  <a class="btn btn-secondary" routerLink="/home">Volver al dashboard</a>
+</div>
+} @else {
+<div class="container d-flex flex-column">
+  <div>
+    <img class="w-75" [src]="user()?.image" alt="Imagen de usuario" />
+  </div>
+  <hr class="my-4" />
+  <div>
+    <h2>{{ user()?.first_name }}</h2>
+    <h3>{{ user()?.last_name }}</h3>
+    <p>Nombre de usuario: {{ user()?.username }}</p>
+    <p>Email: {{ user()?.email }}</p>
+    <div class="mt-auto">
+      <div class="btn-group w-100" role="group">
+        <button type="button" class="btn btn-secondary">
+          <img class="w-25" src="search.svg" alt="" />
+          <p>Volver al dashboard</p>
+        </button>
+        <button type="button" class="btn btn-warning">
+          <img class="w-25" src="refresh.svg" alt="" />
+          <p>Actualizar</p>
+        </button>
+        <button type="button" class="btn btn-danger">
+          <img class="w-25" src="bin.svg" alt="" />
+          <p>Eliminar</p>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+}
