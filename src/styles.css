@@ -5,3 +5,8 @@
   --accent-light: #ead196;
   --fill: #eeeeee;
 }
+
+.btn-cta {
+  background-color: var(--primary) !important;
+  color: white !important;
+}
