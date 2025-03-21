@@ -2,24 +2,25 @@
     <div class="my-5">
         <h2>{{ formMeta.title }}</h2>
     </div>
-    <form>
+    <form [formGroup]="userForm" (ngSubmit)="handleSubmit()">
         <div class="mb-3">
             <label for="firstName" class="form-label">Nombre de usuario</label>
-            <input type="text" class="form-control" id="firstName">
+            <input type="text" class="form-control" id="firstName" formControlName="userName">
         </div>
         <div class="mb-3">
             <label for="lastName" class="form-label">Apellido</label>
-            <input type="text" class="form-control" id="lastName">
+            <input type="text" class="form-control" id="lastName" formControlName="lastName">
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email">
+            <input type="email" class="form-control" id="email" formControlName="email">
         </div>
         <div class="mb-3">
             <label for="image" class="form-label">Imagen usuario</label>
-            <input type="url" class="form-control" id="image">
+            <input type="url" class="form-control" id="image" formControlName="image">
         </div>
       
         <button class="btn btn-cta mt-2">{{ formMeta.submit }}</button>
+        <button class="btn btn-secondary mt-2 mx-2" routerLink="">Cancelar</button>
     </form>
 </div>
