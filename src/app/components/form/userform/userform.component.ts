@@ -1,13 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { imageUrlValidator } from './urlValidator';
+import { UserService } from '../../../services/user.service';
+import { UserDTO } from '../../../Interfaces/UserDTO';
+import { lastValueFrom } from 'rxjs';
 
 type RouteKey = 'newuser' | 'updateuser';
 
@@ -20,6 +17,10 @@ type RouteKey = 'newuser' | 'updateuser';
 export class UserformComponent implements OnInit {
   route = inject(ActivatedRoute);
   formBuilder = inject(FormBuilder);
+  userService = inject(UserService);
+
+  formSucess = signal(false);
+  formError = signal(false);
 
   readonly routeFormMeta: Record<RouteKey, { title: string; submit: string }> =
     {
@@ -47,8 +48,31 @@ export class UserformComponent implements OnInit {
     this.setFormMetaFromRoute();
   }
 
-  handleSubmit() {
-    console.log(this.userForm.value);
+  async handleSubmit() {
+    if (!this.userForm.valid) return;
+
+    const { userName, lastName, email, image } = this.controls;
+
+    const firstNameValue = userName?.value?.trim() ?? '';
+    const lastNameValue = lastName?.value?.trim() ?? '';
+    const emailValue = email?.value?.trim() ?? '';
+    const imageValue = image?.value?.trim() ?? '';
+
+    const user: UserDTO = {
+      first_name: firstNameValue,
+      last_name: lastNameValue,
+      username:
+        firstNameValue && lastNameValue
+          ? `${firstNameValue}-${lastNameValue}`
+          : '',
+      email: emailValue,
+      image: imageValue,
+    };
+
+    const userResponse = await lastValueFrom(this.userService.createUser(user));
+    if (!userResponse) this.showError();
+    this.showSucess();
+    this.userForm.reset();
   }
 
   private setFormMetaFromRoute() {
@@ -57,5 +81,15 @@ export class UserformComponent implements OnInit {
     if (route && route in this.routeFormMeta) {
       this.formMeta = this.routeFormMeta[route as RouteKey];
     }
+  }
+
+  private showError() {
+    this.formError.set(true);
+    setTimeout(() => this.formError.set(false), 4000);
+  }
+
+  private showSucess() {
+    this.formSucess.set(true);
+    setTimeout(() => this.formSucess.set(false), 4000);
   }
 }

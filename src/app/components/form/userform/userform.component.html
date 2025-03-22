@@ -1,3 +1,11 @@
+@if (this.formSucess()) {
+<div class="alert alert-success" role="alert">El usuario ha sido guardado</div>
+} @if (this.formError()) {
+<div class="alert alert-danger" role="alert">
+  El usuario no se ha podido guardar
+</div>
+}
+
 <div class="container mt-5">
   <div class="my-5">
     <h2>{{ formMeta.title }}</h2>
@@ -12,7 +20,7 @@
         formControlName="userName"
         placeholder="Alan"
       />
-      @if (controls.userName.touched && controls.userName.valid) {
+      @if (controls.userName.touched && !controls.userName.valid) {
       <p class="text-danger">El nombre es obligatorio</p>
       }
     </div>
@@ -25,7 +33,7 @@
         formControlName="lastName"
         placeholder="Turing"
       />
-      @if(controls.lastName.touched && controls.lastName.valid) {
+      @if(controls.lastName.touched && !controls.lastName.valid) {
       <p class="text-danger">El apellido es obligatorio</p>
       }
     </div>
@@ -62,7 +70,10 @@
     </div>
 
     @if (userForm.valid) {
-    <button class="btn btn-cta mt-2">{{ formMeta.submit }}</button> }
+    <button type="submit" class="btn btn-cta mt-2">
+      {{ formMeta.submit }}
+    </button>
+    }
     <button class="btn btn-secondary mt-2 mx-2" routerLink="">Cancelar</button>
   </form>
 </div>
