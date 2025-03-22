@@ -31,8 +31,12 @@ export class DetailComponent {
     this.modal.set(!this.modal());
   }
 
-  async deleteUser() {
+  async onDeleteUser() {
     await lastValueFrom(this.userService.deleteUser(this.user()!._id));
     this.router.navigate(['']);
+  }
+
+  onUpdateUser() {
+    this.router.navigate(['updateuser', this.user()?._id]);
   }
 }

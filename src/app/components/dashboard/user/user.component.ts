@@ -1,6 +1,7 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, inject, input, output, signal } from '@angular/core';
 import { User } from '../../../Interfaces/User';
 import { DeletemodalComponent } from '../../deletemodal/deletemodal.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -11,6 +12,7 @@ import { DeletemodalComponent } from '../../deletemodal/deletemodal.component';
 export class UserComponent {
   user = input<User>();
   modal = signal(false);
+  router = inject(Router);
   deleteUserOutput = output<string>({ alias: 'delete' });
   detailUserOutput = output<string>({ alias: 'detail' });
   public get fullname() {
@@ -18,6 +20,9 @@ export class UserComponent {
   }
   public get userId(): string {
     return this.user()!._id;
+  }
+  onUpdate() {
+    this.router.navigate(['updateuser', this.user()?._id]);
   }
 
   onDelete() {

@@ -34,7 +34,7 @@
           <img class="w-25" src="search.svg" alt="" />
           <p>Volver</p>
         </button>
-        <button type="button" class="btn btn-warning">
+        <button type="button" class="btn btn-warning" (click)="onUpdateUser()">
           <img class="w-25" src="refresh.svg" alt="" />
           <p>Actualizar</p>
         </button>
@@ -51,5 +51,5 @@
 <app-deletemodal
   [isVisible]="modal()"
   (cancel)="toggleModal()"
-  (delete)="deleteUser()"
+  (delete)="onDeleteUser()"
 />

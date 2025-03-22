@@ -87,6 +87,16 @@ export class UserformComponent implements OnInit {
     if (route && route in this.routeFormMeta) {
       this.formMeta = this.routeFormMeta[route as RouteKey];
     }
+
+    if (route === 'updateuser') {
+      const userId = this.route.snapshot.params['id'];
+      this.userService.getUser(userId).subscribe((user) => {
+        this.userForm.controls.userName.setValue(user.first_name);
+        this.userForm.controls.lastName.setValue(user.last_name);
+        this.userForm.controls.email.setValue(user.email);
+        this.userForm.controls.image.setValue(user.image);
+      });
+    }
   }
 
   private showError() {
