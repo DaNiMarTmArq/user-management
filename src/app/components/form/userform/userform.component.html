@@ -73,10 +73,12 @@
       }
     </div>
 
-    @if (userForm.valid) {
+    @if (userForm.dirty && userForm.valid && !this.formIsSubmitting()) {
     <button type="submit" class="btn btn-cta mt-2">
       {{ formMeta.submit }}
     </button>
+    } @if (this.formIsSubmitting()) {
+    <app-load />
     }
     <button class="btn btn-secondary mt-2 mx-2" routerLink="">Cancelar</button>
   </form>

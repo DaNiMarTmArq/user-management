@@ -12,12 +12,13 @@ import { lastValueFrom } from 'rxjs';
 import { UserDTO } from '../../../Interfaces/UserDTO';
 import { UserService } from '../../../services/user.service';
 import { imageUrlValidator } from './urlValidator';
+import { LoadComponent } from '../../load/load.component';
 
 type RouteKey = 'newuser' | 'updateuser';
 
 @Component({
   selector: 'app-userform',
-  imports: [RouterModule, ReactiveFormsModule],
+  imports: [RouterModule, ReactiveFormsModule, LoadComponent],
   templateUrl: './userform.component.html',
   styleUrl: './userform.component.css',
 })
@@ -28,6 +29,7 @@ export class UserformComponent implements OnInit {
   @Input() id = '';
 
   readonly alertTimeout = 3000;
+  formIsSubmitting = signal(false);
   formSucess = signal(false);
   formError = signal(false);
   formType: WritableSignal<'create' | 'update'> = signal('create');
@@ -60,6 +62,7 @@ export class UserformComponent implements OnInit {
 
   async handleSubmit() {
     if (!this.userForm.valid) return;
+
     const { userName, lastName, email, image } = this.controls;
 
     const firstNameValue = userName?.value?.trim() ?? '';
@@ -107,6 +110,7 @@ export class UserformComponent implements OnInit {
 
   private async saveUser(user: UserDTO) {
     try {
+      this.formIsSubmitting.set(true);
       const userResponse = await lastValueFrom(
         this.userService.createUser(user)
       );
@@ -115,17 +119,22 @@ export class UserformComponent implements OnInit {
       this.showError();
     } finally {
       this.userForm.reset();
+      this.formIsSubmitting.set(false);
     }
   }
 
   private async updateUser(id: string, user: UserDTO) {
     try {
+      this.formIsSubmitting.set(true);
       const userUpdateResponse = await lastValueFrom(
         this.userService.updateUser(id, user)
       );
       if (userUpdateResponse) this.showSucess();
+      this.userForm.markAsPristine();
     } catch (error) {
       this.showError();
+    } finally {
+      this.formIsSubmitting.set(false);
     }
   }
 
