@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
+  FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -16,47 +17,45 @@ type RouteKey = 'newuser' | 'updateuser';
   templateUrl: './userform.component.html',
   styleUrl: './userform.component.css',
 })
-export class UserformComponent {
+export class UserformComponent implements OnInit {
   route = inject(ActivatedRoute);
+  formBuilder = inject(FormBuilder);
 
   readonly routeFormMeta: Record<RouteKey, { title: string; submit: string }> =
     {
       newuser: { title: 'Nuevo usuario', submit: 'Guardar' },
       updateuser: { title: 'Actualizar usuario', submit: 'Actualizar' },
     };
+
   formMeta = {
     title: 'Formulario',
     submit: 'Enviar',
   };
-  userForm = new FormGroup({
-    userName: new FormControl('', Validators.required),
-    lastName: new FormControl('', Validators.required),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    image: new FormControl('', [Validators.required, imageUrlValidator()]),
+
+  readonly userForm = this.formBuilder.group({
+    userName: ['', Validators.required],
+    lastName: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    image: ['', [Validators.required, imageUrlValidator()]],
   });
 
-  ngOnInit() {
-    const route = this.route.snapshot.url[0]?.path;
+  get controls() {
+    return this.userForm.controls;
+  }
 
-    if (route && route in this.routeFormMeta) {
-      this.formMeta = this.routeFormMeta[route as RouteKey];
-    }
+  ngOnInit() {
+    this.setFormMetaFromRoute();
   }
 
   handleSubmit() {
     console.log(this.userForm.value);
   }
 
-  get userName() {
-    return this.userForm.get('userName');
-  }
-  get lastName() {
-    return this.userForm.get('lastName');
-  }
-  get email() {
-    return this.userForm.get('email');
-  }
-  get image() {
-    return this.userForm.get('image');
+  private setFormMetaFromRoute() {
+    const route = this.route.snapshot.url[0]?.path;
+
+    if (route && route in this.routeFormMeta) {
+      this.formMeta = this.routeFormMeta[route as RouteKey];
+    }
   }
 }

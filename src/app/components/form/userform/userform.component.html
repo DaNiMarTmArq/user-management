@@ -12,7 +12,7 @@
         formControlName="userName"
         placeholder="Alan"
       />
-      @if (userName?.touched && !userName?.valid) {
+      @if (controls.userName.touched && controls.userName.valid) {
       <p class="text-danger">El nombre es obligatorio</p>
       }
     </div>
@@ -25,7 +25,7 @@
         formControlName="lastName"
         placeholder="Turing"
       />
-      @if(lastName?.touched && !lastName?.valid) {
+      @if(controls.lastName.touched && controls.lastName.valid) {
       <p class="text-danger">El apellido es obligatorio</p>
       }
     </div>
@@ -38,9 +38,9 @@
         formControlName="email"
         placeholder="alan@turing.com"
       />
-      @if(email?.touched && email?.hasError("required")) {
+      @if(controls.email.touched && controls.email.hasError("required")) {
       <p class="text-danger">El email es obligatorio</p>
-      } @if(email?.touched && email?.hasError("email")) {
+      } @if(controls.email.touched && controls.email.hasError("email")) {
       <p class="text-danger">Introduce un email válido</p>
       }
     </div>
@@ -53,9 +53,10 @@
         formControlName="image"
         placeholder="https://www.domain.com/image.jpg"
       />
-      @if(image?.touched && image?.hasError("required")) {
+      @if(controls.image.touched && controls.image.hasError("required")) {
       <p class="text-danger">La url de imagen es obligatoria</p>
-      } @if (image?.hasError("invalidImageUrl")) {
+      } @if (controls.image.touched &&
+      controls.image.hasError("invalidImageUrl")) {
       <p class="text-danger">Introduce una url de imagen válida</p>
       }
     </div>
