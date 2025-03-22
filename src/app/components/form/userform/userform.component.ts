@@ -19,6 +19,7 @@ export class UserformComponent implements OnInit {
   formBuilder = inject(FormBuilder);
   userService = inject(UserService);
 
+  readonly alertTimeout = 3000;
   formSucess = signal(false);
   formError = signal(false);
 
@@ -45,7 +46,7 @@ export class UserformComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.setFormMetaFromRoute();
+    this.setFormStateFromRoute();
   }
 
   async handleSubmit() {
@@ -68,14 +69,19 @@ export class UserformComponent implements OnInit {
       email: emailValue,
       image: imageValue,
     };
-
-    const userResponse = await lastValueFrom(this.userService.createUser(user));
-    if (!userResponse) this.showError();
-    this.showSucess();
-    this.userForm.reset();
+    try {
+      const userResponse = await lastValueFrom(
+        this.userService.createUser(user)
+      );
+      if (userResponse) this.showSucess();
+    } catch (error) {
+      this.showError();
+    } finally {
+      this.userForm.reset();
+    }
   }
 
-  private setFormMetaFromRoute() {
+  private setFormStateFromRoute() {
     const route = this.route.snapshot.url[0]?.path;
 
     if (route && route in this.routeFormMeta) {
@@ -85,11 +91,11 @@ export class UserformComponent implements OnInit {
 
   private showError() {
     this.formError.set(true);
-    setTimeout(() => this.formError.set(false), 4000);
+    setTimeout(() => this.formError.set(false), this.alertTimeout);
   }
 
   private showSucess() {
     this.formSucess.set(true);
-    setTimeout(() => this.formSucess.set(false), 4000);
+    setTimeout(() => this.formSucess.set(false), this.alertTimeout);
   }
 }
