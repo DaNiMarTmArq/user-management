@@ -1,8 +1,12 @@
 @if (this.formSucess()) {
-<div class="alert alert-success" role="alert">El usuario ha sido guardado</div>
+<div class="alert alert-success" role="alert">
+  El usuario se ha
+  {{ formType() === "create" ? "guardado" : "actualizado" }} correctamente
+</div>
 } @if (this.formError()) {
 <div class="alert alert-danger" role="alert">
-  El usuario no se ha podido guardar
+  El usuario no se ha podido
+  {{ formType() === "create" ? "guardar" : "actualizar" }}
 </div>
 }
 

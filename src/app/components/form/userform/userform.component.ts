@@ -1,10 +1,17 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  OnInit,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { imageUrlValidator } from './urlValidator';
-import { UserService } from '../../../services/user.service';
-import { UserDTO } from '../../../Interfaces/UserDTO';
 import { lastValueFrom } from 'rxjs';
+import { UserDTO } from '../../../Interfaces/UserDTO';
+import { UserService } from '../../../services/user.service';
+import { imageUrlValidator } from './urlValidator';
 
 type RouteKey = 'newuser' | 'updateuser';
 
@@ -18,10 +25,12 @@ export class UserformComponent implements OnInit {
   route = inject(ActivatedRoute);
   formBuilder = inject(FormBuilder);
   userService = inject(UserService);
+  @Input() id = '';
 
   readonly alertTimeout = 3000;
   formSucess = signal(false);
   formError = signal(false);
+  formType: WritableSignal<'create' | 'update'> = signal('create');
 
   readonly routeFormMeta: Record<RouteKey, { title: string; submit: string }> =
     {
@@ -51,7 +60,6 @@ export class UserformComponent implements OnInit {
 
   async handleSubmit() {
     if (!this.userForm.valid) return;
-
     const { userName, lastName, email, image } = this.controls;
 
     const firstNameValue = userName?.value?.trim() ?? '';
@@ -69,6 +77,35 @@ export class UserformComponent implements OnInit {
       email: emailValue,
       image: imageValue,
     };
+
+    this.formType() === 'create'
+      ? this.saveUser(user)
+      : this.updateUser(this.id, user);
+  }
+
+  private setFormStateFromRoute() {
+    const route = this.route.snapshot.url[0]?.path;
+
+    if (route && route in this.routeFormMeta) {
+      this.formMeta = this.routeFormMeta[route as RouteKey];
+    }
+
+    if (route === 'updateuser') {
+      this.updateFormSetup();
+    }
+  }
+
+  private updateFormSetup() {
+    this.userService.getUser(this.id).subscribe((user) => {
+      this.controls.userName.setValue(user.first_name);
+      this.controls.lastName.setValue(user.last_name);
+      this.controls.email.setValue(user.email);
+      this.controls.image.setValue(user.image);
+    });
+    this.formType.set('update');
+  }
+
+  private async saveUser(user: UserDTO) {
     try {
       const userResponse = await lastValueFrom(
         this.userService.createUser(user)
@@ -81,21 +118,14 @@ export class UserformComponent implements OnInit {
     }
   }
 
-  private setFormStateFromRoute() {
-    const route = this.route.snapshot.url[0]?.path;
-
-    if (route && route in this.routeFormMeta) {
-      this.formMeta = this.routeFormMeta[route as RouteKey];
-    }
-
-    if (route === 'updateuser') {
-      const userId = this.route.snapshot.params['id'];
-      this.userService.getUser(userId).subscribe((user) => {
-        this.userForm.controls.userName.setValue(user.first_name);
-        this.userForm.controls.lastName.setValue(user.last_name);
-        this.userForm.controls.email.setValue(user.email);
-        this.userForm.controls.image.setValue(user.image);
-      });
+  private async updateUser(id: string, user: UserDTO) {
+    try {
+      const userUpdateResponse = await lastValueFrom(
+        this.userService.updateUser(id, user)
+      );
+      if (userUpdateResponse) this.showSucess();
+    } catch (error) {
+      this.showError();
     }
   }
 

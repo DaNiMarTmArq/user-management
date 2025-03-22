@@ -6,7 +6,7 @@ export function imageUrlValidator(): ValidatorFn {
 
     if (!value) return null;
 
-    const regex = /^https?:\/\/.*\.(jpg|jpeg|png|svg|webp)$/i;
+    const regex = /^https?:\/\//i;
 
     return regex.test(value) ? null : { invalidImageUrl: true };
   };
